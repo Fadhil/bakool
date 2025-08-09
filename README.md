@@ -11,6 +11,13 @@ A flexible Ruby library for managing shopping baskets with support for products,
 - 🧪 **Test Coverage**: Comprehensive test suite with RSpec
 - 🔧 **Extensible Design**: Easy to extend with custom rules and behaviors
 
+
+## Assumptions made for development:
+
+- We're dealing with an unspecified currency that uses 2 decimal places for cents
+- We currently will only support having one discount rule and one delivery charge rule per basket
+
+
 ## Installation
 
 1. Clone the repository:
