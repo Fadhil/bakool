@@ -18,7 +18,7 @@ module Bakool
 
     # @param func [Proc] A function that takes an order total in cents and returns the delivery charge in cents
     def initialize(func = nil)
-      @func = func || ->(order_total) { 0 }
+      @func = func || ->(_order_total) { 0 }
     end
 
     # Returns the delivery charge in cents
