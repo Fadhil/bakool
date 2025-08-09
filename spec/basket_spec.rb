@@ -83,7 +83,7 @@ describe Basket do
 
     context "with two R01 items in the basket and given discount rule for buy second R01 items at half price and given delivery charge rules" do
       it "applies discount accordingly" do
-        discount_rule = DiscountRule.new(lambda { |basket| if basket.items.filter { |item| item.code == "R01" }.count >= 2 then (basket.items.find {|items| items.code == "R01"}.price_in_cents / 2.0).ceil else 0 end })
+        discount_rule = DiscountRule.new(lambda { |basket| if basket.items.filter { |item| item.code == "R01" }.count >= 2 then (basket.items.find { |items| items.code == "R01" }.price_in_cents / 2.0).ceil else 0 end })
         delivery_charge_rule = DeliveryChargeRule.new(lambda { |order_total| if order_total < 5000 then 495 elsif order_total < 9000 then 295 else 0 end })
         basket = Basket.new(discount_rule: discount_rule, delivery_charge_rule: delivery_charge_rule)
         basket.add("R01")
@@ -95,7 +95,7 @@ describe Basket do
 
   context "with one B01 and one G01 in the basket and given discount rule for buy second R01 items at half price and given delivery charge rules" do
     it "applies discount accordingly" do
-      discount_rule = DiscountRule.new(lambda { |basket| if basket.items.filter { |item| item.code == "R01" }.count >= 2 then (basket.items.find {|items| items.code == "R01"}.price_in_cents / 2.0).ceil else 0 end })
+      discount_rule = DiscountRule.new(lambda { |basket| if basket.items.filter { |item| item.code == "R01" }.count >= 2 then (basket.items.find { |items| items.code == "R01" }.price_in_cents / 2.0).ceil else 0 end })
       delivery_charge_rule = DeliveryChargeRule.new(lambda { |order_total| if order_total < 5000 then 495 elsif order_total < 9000 then 295 else 0 end })
       basket = Basket.new(discount_rule: discount_rule, delivery_charge_rule: delivery_charge_rule)
       basket.add("B01")
@@ -106,7 +106,7 @@ describe Basket do
 
   context "with B01, B01, R01, R01, R01 in the basket and given discount rule for buy second R01 items at half price and given delivery charge rules" do
     it "applies discount accordingly" do
-      discount_rule = DiscountRule.new(lambda { |basket| if basket.items.filter { |item| item.code == "R01" }.count >= 2 then (basket.items.find {|items| items.code == "R01"}.price_in_cents / 2.0).ceil else 0 end })
+      discount_rule = DiscountRule.new(lambda { |basket| if basket.items.filter { |item| item.code == "R01" }.count >= 2 then (basket.items.find { |items| items.code == "R01" }.price_in_cents / 2.0).ceil else 0 end })
       delivery_charge_rule = DeliveryChargeRule.new(lambda { |order_total| if order_total < 5000 then 495 elsif order_total < 9000 then 295 else 0 end })
       basket = Basket.new(discount_rule: discount_rule, delivery_charge_rule: delivery_charge_rule)
       basket.add("B01")
@@ -117,5 +117,4 @@ describe Basket do
       expect(basket.total).to eq(98.27)
     end
   end
-
 end

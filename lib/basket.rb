@@ -22,12 +22,12 @@ class Basket
   end
 
   def total
-    total_in_cents_before_adjustments= 0
+    total_in_cents_before_adjustments = 0
     items.each do |item|
       total_in_cents_before_adjustments += item.price_in_cents
     end
     discounts = discount_rule.calculate(self)
-    total_in_cents_after_discounts = total_in_cents_before_adjustments - discounts 
+    total_in_cents_after_discounts = total_in_cents_before_adjustments - discounts
     delivery_charge = delivery_charge_rule.calculate(total_in_cents_after_discounts)
     (total_in_cents_after_discounts + delivery_charge) / 100.0
   end
