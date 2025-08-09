@@ -7,6 +7,7 @@ class DeliveryChargeRule
   end
 
   # Returns the delivery charge in cents
+  # We only take order_total because delivery charges are not dependent on the basket's composition (for now)
   def calculate(order_total)
     @func.call(order_total)
   end
