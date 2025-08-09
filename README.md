@@ -66,6 +66,7 @@ bundle exec rake install
 require 'bakool'
 
 # Create a basket with default catalogue and rules
+# Note: Delivery is free by default (no delivery charges applied)
 basket = Bakool::Basket.new
 
 # Add products by their codes
@@ -197,6 +198,8 @@ default_catalogue = Bakool::Catalogue.default_catalogue
 ```
 
 ### Custom Delivery Charges
+
+By default, delivery is free (no delivery charges are applied). You can create custom delivery charge rules to implement your own pricing logic.
 
 ```ruby
 # Create custom delivery charge rule

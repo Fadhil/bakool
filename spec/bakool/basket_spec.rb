@@ -67,10 +67,10 @@ describe Bakool::Basket do
     end
 
     context "with one R01 item in the basket and no delivery charge rules" do
-      it "applies 4.95 delivery charge" do
+      it "applies no delivery charge (free delivery by default)" do
         basket = Bakool::Basket.new
         basket.add("R01")
-        expect(basket.total).to eq(37.9)
+        expect(basket.total).to eq(32.95)
       end
     end
 

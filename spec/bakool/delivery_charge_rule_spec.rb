@@ -13,10 +13,10 @@ describe Bakool::DeliveryChargeRule do
   end
 
   context "without a charge function and order total is greater than 0" do
-    it "should return 4.99 in cents" do
+    it "should return 0 (free delivery by default)" do
       delivery_charge_rule = Bakool::DeliveryChargeRule.new
 
-      expect(delivery_charge_rule.calculate(100)).to eq(495)
+      expect(delivery_charge_rule.calculate(100)).to eq(0)
     end
   end
 

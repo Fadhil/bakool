@@ -7,7 +7,7 @@ module Bakool
   #
   # @example
   #   rule = Bakool::DeliveryChargeRule.new
-  #   charge = rule.calculate(5000) # 495 cents for orders over 0
+  #   charge = rule.calculate(5000) # 0 cents for orders (free delivery by default)
   #
   # @example Custom rule
   #   custom_rule = Bakool::DeliveryChargeRule.new(->(total) { total > 5000 ? 0 : 1000 })
@@ -18,7 +18,7 @@ module Bakool
 
     # @param func [Proc] A function that takes an order total in cents and returns the delivery charge in cents
     def initialize(func = nil)
-      @func = func || ->(order_total) { order_total.positive? ? 495 : 0 }
+      @func = func || ->(order_total) { 0 }
     end
 
     # Returns the delivery charge in cents
