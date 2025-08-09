@@ -1,13 +1,13 @@
 # Bakool: Shopping Basket Library
 
-A flexible Ruby library for managing shopping baskets with support for products, delivery charges, and discount rules.
+A flexible Ruby library for managing shopping baskets with support for products, delivery charges, and discount strategies.
 
 ## Features
 
 - 🛒 **Shopping Basket Management**: Add products to a basket and calculate totals
 - 📦 **Product Catalogue**: Manage product inventory with codes, names, and prices
 - 🚚 **Flexible Delivery Charges**: Configurable delivery charge rules based on order total
-- 🎯 **Discount Rules**: Customizable discount calculations for promotional offers
+- 🎯 **Discount Strategies**: Extensible discount strategy pattern for promotional offers
 - 🧪 **Test Coverage**: Comprehensive test suite with RSpec
 - 🔧 **Extensible Design**: Easy to extend with custom rules and behaviors
 
@@ -15,7 +15,7 @@ A flexible Ruby library for managing shopping baskets with support for products,
 ## Assumptions made for development:
 
 - We're dealing with an unspecified currency that uses 2 decimal places for cents
-- We currently will only support having one discount rule and one delivery charge rule per basket
+- We currently will only support having one discount strategy and one delivery charge rule per basket
 - Delivery calculations are only done based on the total price after discount and is not dependent on what items are in the basket
 - Discount calculations depend on the items/item combinations in the basket
 
@@ -77,21 +77,44 @@ end)
 basket = Basket.new(delivery_charge_rule: delivery_rule)
 ```
 
-### Custom Discount Rules
+### Discount Strategies
+
+The library uses the Strategy Pattern for discounts, making it easy to implement and extend different discount types.
+
+#### Using Built-in Discount Strategies
 
 ```ruby
-# Create discount rule for "buy one get one half price" on Red Widgets
-discount_rule = DiscountRule.new(lambda do |basket|
-  red_widgets = basket.items.filter { |item| item.code == "R01" }
-  if red_widgets.count >= 2
-    # Apply 50% discount to second Red Widget
-    (red_widgets.first.price_in_cents / 2.0).ceil
-  else
-    0
-  end
-end)
+# Use the default discount (no discount)
+basket = Basket.new(discount: DefaultDiscount.new)
 
-basket = Basket.new(discount_rule: discount_rule)
+# Use 50% off second same item discount for Red Widgets
+discount = FiftyPercentOff2ndSameItemDiscount.new("R01")
+basket = Basket.new(discount: discount)
+```
+
+#### Creating Custom Discount Strategies
+
+```ruby
+# Create a custom discount strategy
+class BuyOneGetOneFreeDiscount < Discount
+  def initialize(item_code)
+    @item_code = item_code
+  end
+
+  def calculate(basket)
+    items = basket.items.filter { |item| item.code == @item_code }
+    if items.count >= 2
+      # Apply 100% discount to every second item
+      (items.count / 2) * items.first.price_in_cents
+    else
+      0
+    end
+  end
+end
+
+# Use the custom discount
+discount = BuyOneGetOneFreeDiscount.new("R01")
+basket = Basket.new(discount: discount)
 ```
 
 ### Complete Example
@@ -105,18 +128,12 @@ delivery_rule = DeliveryChargeRule.new(lambda do |order_total|
   end
 end)
 
-discount_rule = DiscountRule.new(lambda do |basket|
-  red_widgets = basket.items.filter { |item| item.code == "R01" }
-  if red_widgets.count >= 2
-    (red_widgets.first.price_in_cents / 2.0).ceil
-  else
-    0
-  end
-end)
+# Use 50% off second Red Widget discount
+discount = FiftyPercentOff2ndSameItemDiscount.new("R01")
 
 basket = Basket.new(
   delivery_charge_rule: delivery_rule,
-  discount_rule: discount_rule
+  discount: discount
 )
 
 # Add items
@@ -135,13 +152,14 @@ puts "Total: $#{total}"  # Output: Total: $54.37
 
 The main class for managing shopping baskets.
 
-#### `Basket.new(catalogue:, delivery_charge_rule:, discount_rule:)`
+#### `Basket.new(catalogue:, delivery_charge_rule:, discount_rule:, discount:)`
 
 Creates a new basket instance.
 
 - `catalogue` (optional): Product catalogue (defaults to `Catalogue.default_catalogue`)
 - `delivery_charge_rule` (optional): Delivery charge calculation rule (defaults to `DeliveryChargeRule.default_delivery_charge_rule`)
-- `discount_rule` (optional): Discount calculation rule (defaults to `DiscountRule.default_discount_rule`)
+- `discount_rule` (optional): Legacy discount rule (defaults to `DiscountRule.default_discount_rule`)
+- `discount` (optional): Discount strategy (defaults to `DefaultDiscount.default_discount`)
 
 #### `basket.add(product_code)`
 
@@ -209,9 +227,60 @@ Calculates delivery charge for an order total.
 - `order_total` (Integer): Order total in cents
 - Returns: `Integer` - Delivery charge in cents
 
-### DiscountRule
+### Discount Strategies
 
-Handles discount calculations.
+The discount system uses the Strategy Pattern for flexible and extensible discount calculations.
+
+#### `Discount`
+
+Base class for all discount strategies.
+
+#### `discount.calculate(basket)`
+
+Calculates discount for a basket.
+
+- `basket` (Basket): Basket object
+- Returns: `Integer` - Discount amount in cents
+
+#### `DefaultDiscount`
+
+Default discount strategy that applies no discount.
+
+```ruby
+discount = DefaultDiscount.new
+# or
+discount = DefaultDiscount.default_discount
+```
+
+#### `FiftyPercentOff2ndSameItemDiscount`
+
+Applies 50% discount to the second item of the same type.
+
+```ruby
+# 50% off second Red Widget
+discount = FiftyPercentOff2ndSameItemDiscount.new("R01")
+```
+
+#### Creating Custom Discount Strategies
+
+To create a custom discount strategy, inherit from the `Discount` base class:
+
+```ruby
+class CustomDiscount < Discount
+  def initialize(parameters)
+    # Initialize your discount strategy
+  end
+
+  def calculate(basket)
+    # Implement your discount logic
+    # Return discount amount in cents
+  end
+end
+```
+
+### Legacy DiscountRule
+
+**Note**: This is the legacy discount system. New code should use the Strategy Pattern approach.
 
 #### `DiscountRule.new(func)`
 
