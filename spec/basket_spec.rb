@@ -1,0 +1,19 @@
+require "basket"
+
+describe Basket do
+   context "without a given catalogue" do
+        it "creates a basket with a catalogue of default products" do
+            basket = Basket.new
+            expect(basket.catalogue.products.count).to eq(3)
+            expect(basket.catalogue.products[0].name).to eq("Red Widget")
+            expect(basket.catalogue.products[0].code).to eq("R01")
+            expect(basket.catalogue.products[0].price).to eq(32.95)
+            expect(basket.catalogue.products[1].name).to eq("Green Widget")
+            expect(basket.catalogue.products[1].code).to eq("G01")
+            expect(basket.catalogue.products[1].price).to eq(24.95)
+            expect(basket.catalogue.products[2].name).to eq("Blue Widget")
+            expect(basket.catalogue.products[2].code).to eq("B01")
+            expect(basket.catalogue.products[2].price).to eq(7.95)
+        end
+   end
+end
