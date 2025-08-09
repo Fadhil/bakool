@@ -278,23 +278,6 @@ class CustomDiscount < Discount
 end
 ```
 
-### Legacy DiscountRule
-
-**Note**: This is the legacy discount system. New code should use the Strategy Pattern approach.
-
-#### `DiscountRule.new(func)`
-
-Creates a new discount rule.
-
-- `func` (Proc, optional): Function that takes a basket and returns discount amount in cents
-
-#### `discount_rule.calculate(basket)`
-
-Calculates discount for a basket.
-
-- `basket` (Basket): Basket object
-- Returns: `Integer` - Discount amount in cents
-
 ## Testing
 
 Run the test suite:
