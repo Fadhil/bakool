@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "delivery_charge_rule"
+require "bakool"
 
 # rubocop:disable Metrics/BlockLength
-describe DeliveryChargeRule do
+describe Bakool::DeliveryChargeRule do
   context "without a charge function and order total is 0" do
     it "should return 0" do
-      delivery_charge_rule = DeliveryChargeRule.new
+      delivery_charge_rule = Bakool::DeliveryChargeRule.new
 
       expect(delivery_charge_rule.calculate(0)).to eq(0)
     end
@@ -14,7 +14,7 @@ describe DeliveryChargeRule do
 
   context "without a charge function and order total is greater than 0" do
     it "should return 4.99 in cents" do
-      delivery_charge_rule = DeliveryChargeRule.new
+      delivery_charge_rule = Bakool::DeliveryChargeRule.new
 
       expect(delivery_charge_rule.calculate(100)).to eq(495)
     end
@@ -32,7 +32,7 @@ describe DeliveryChargeRule do
         end
       end
 
-      delivery_charge_rule = DeliveryChargeRule.new(rules)
+      delivery_charge_rule = Bakool::DeliveryChargeRule.new(rules)
 
       expect(delivery_charge_rule.calculate(100)).to eq(299)
       expect(delivery_charge_rule.calculate(99)).to eq(499)

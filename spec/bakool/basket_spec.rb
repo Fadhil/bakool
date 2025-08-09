@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "basket"
+require "bakool"
 
 # rubocop:disable Metrics/BlockLength
-describe Basket do
+describe Bakool::Basket do
   context "without a given catalogue" do
     it "creates a basket with a catalogue of default products" do
-      basket = Basket.new
+      basket = Bakool::Basket.new
       expect(basket.catalogue.products.count).to eq(3)
       expect(basket.catalogue.products[0].name).to eq("Red Widget")
       expect(basket.catalogue.products[0].code).to eq("R01")
@@ -23,21 +23,21 @@ describe Basket do
   describe ".add" do
     context "without a valid product code" do
       it "raises an error" do
-        basket = Basket.new
-        expect { basket.add("invalid") }.to raise_error(InvalidProductCodeError)
+        basket = Bakool::Basket.new
+        expect { basket.add("invalid") }.to raise_error(Bakool::InvalidProductCodeError)
       end
     end
 
     context "with a valid product code" do
       it "adds the product to the basket" do
-        basket = Basket.new
+        basket = Bakool::Basket.new
         basket.add("R01")
         expect(basket.items.count).to eq(1)
         expect(basket.items.first.code).to eq("R01")
       end
 
       it "adds multiple products to the basket" do
-        basket = Basket.new
+        basket = Bakool::Basket.new
         basket.add("R01")
         basket.add("G01")
         expect(basket.items.count).to eq(2)
@@ -46,7 +46,7 @@ describe Basket do
       end
 
       it "adds multiple products of the same type to the basket" do
-        basket = Basket.new
+        basket = Bakool::Basket.new
         basket.add("R01")
         basket.add("G01")
         basket.add("G01")
@@ -61,14 +61,14 @@ describe Basket do
   describe ".total" do
     context "with no items in the basket" do
       it "returns 0" do
-        basket = Basket.new
+        basket = Bakool::Basket.new
         expect(basket.total).to eq(0)
       end
     end
 
     context "with one R01 item in the basket and no delivery charge rules" do
       it "applies 4.95 delivery charge" do
-        basket = Basket.new
+        basket = Bakool::Basket.new
         basket.add("R01")
         expect(basket.total).to eq(37.9)
       end
@@ -76,7 +76,7 @@ describe Basket do
 
     context "with one R01 and one G01 item in the basket and given delivery charge rules" do
       it "applies delivery charge accordingly" do
-        delivery_charge_rule = DeliveryChargeRule.new(
+        delivery_charge_rule = Bakool::DeliveryChargeRule.new(
           lambda do |order_total|
             if order_total < 5000
               495
@@ -87,7 +87,7 @@ describe Basket do
             end
           end
         )
-        basket = Basket.new(delivery_charge_rule: delivery_charge_rule)
+        basket = Bakool::Basket.new(delivery_charge_rule: delivery_charge_rule)
         basket.add("R01")
         basket.add("G01")
         expect(basket.total).to eq(60.85)
@@ -97,8 +97,8 @@ describe Basket do
     context "with two R01 items in the basket and given discount rule for buy second R01 " \
             "items at half price and given delivery charge rules" do
       it "applies discount accordingly" do
-        discount = FiftyPercentOff2ndSameItemDiscount.new("R01")
-        delivery_charge_rule = DeliveryChargeRule.new(
+        discount = Bakool::FiftyPercentOff2ndSameItemDiscount.new("R01")
+        delivery_charge_rule = Bakool::DeliveryChargeRule.new(
           lambda do |order_total|
             if order_total < 5000
               495
@@ -109,7 +109,7 @@ describe Basket do
             end
           end
         )
-        basket = Basket.new(discount: discount, delivery_charge_rule: delivery_charge_rule)
+        basket = Bakool::Basket.new(discount: discount, delivery_charge_rule: delivery_charge_rule)
         basket.add("R01")
         basket.add("R01")
         expect(basket.total).to eq(54.37)
@@ -120,8 +120,8 @@ describe Basket do
   context "with one B01 and one G01 in the basket and given discount rule for buy second " \
           "R01 items at half price and given delivery charge rules" do
     it "calculates the total correctly" do
-      discount = FiftyPercentOff2ndSameItemDiscount.new("R01")
-      delivery_charge_rule = DeliveryChargeRule.new(
+      discount = Bakool::FiftyPercentOff2ndSameItemDiscount.new("R01")
+      delivery_charge_rule = Bakool::DeliveryChargeRule.new(
         lambda do |order_total|
           if order_total < 5000
             495
@@ -132,7 +132,7 @@ describe Basket do
           end
         end
       )
-      basket = Basket.new(discount: discount, delivery_charge_rule: delivery_charge_rule)
+      basket = Bakool::Basket.new(discount: discount, delivery_charge_rule: delivery_charge_rule)
       basket.add("B01")
       basket.add("G01")
       expect(basket.total).to eq(37.85)
@@ -142,8 +142,8 @@ describe Basket do
   context "with B01, B01, R01, R01, R01 in the basket and given discount rule for buy " \
           "second R01 items at half price and given delivery charge rules" do
     it "calculates the total correctly" do
-      discount = FiftyPercentOff2ndSameItemDiscount.new("R01")
-      delivery_charge_rule = DeliveryChargeRule.new(
+      discount = Bakool::FiftyPercentOff2ndSameItemDiscount.new("R01")
+      delivery_charge_rule = Bakool::DeliveryChargeRule.new(
         lambda do |order_total|
           if order_total < 5000
             495
@@ -154,7 +154,7 @@ describe Basket do
           end
         end
       )
-      basket = Basket.new(discount: discount, delivery_charge_rule: delivery_charge_rule)
+      basket = Bakool::Basket.new(discount: discount, delivery_charge_rule: delivery_charge_rule)
       basket.add("B01")
       basket.add("B01")
       basket.add("R01")
