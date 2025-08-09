@@ -16,4 +16,42 @@ describe Basket do
             expect(basket.catalogue.products[2].price).to eq(7.95)
         end
    end
+
+   describe ".add" do
+     context "without a valid product code" do
+        it "raises an error" do
+            basket = Basket.new
+            expect { basket.add("invalid") }.to raise_error(InvalidProductCodeError)
+        end
+     end
+
+     context "with a valid product code" do
+        it "adds the product to the basket" do
+            basket = Basket.new
+            basket.add("R01")
+            expect(basket.items.count).to eq(1)
+            expect(basket.items.first.code).to eq("R01")
+        end
+
+        it "adds multiple products to the basket" do
+            basket = Basket.new
+            basket.add("R01")
+            basket.add("G01")
+            expect(basket.items.count).to eq(2)
+            expect(basket.items.first.code).to eq("R01")
+            expect(basket.items[1].code).to eq("G01")
+        end
+
+        it "adds multiple products of the same type to the basket" do
+            basket = Basket.new
+            basket.add("R01")
+            basket.add("G01")
+            basket.add("G01")
+            expect(basket.items.count).to eq(3)
+            expect(basket.items.first.code).to eq("R01")
+            expect(basket.items[1].code).to eq("G01")
+            expect(basket.items[2].code).to eq("G01")
+        end
+     end
+   end
 end
