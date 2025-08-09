@@ -1,5 +1,5 @@
 class Product
-  attr_accessor :name, :code, :price
+  attr_accessor :name, :code, :price, :price_in_cents
 
   def initialize(name, code, price = 0)
     if name.nil? || name.empty? || code.nil? || code.empty?
@@ -13,5 +13,10 @@ class Product
     @name = name
     @code = code
     @price = price
+    @price_in_cents = price_in_cents
+  end
+
+  def price_in_cents
+    @price * 100
   end
 end

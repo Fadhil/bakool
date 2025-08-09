@@ -8,6 +8,11 @@ describe Product do
       expect(product.code).to eq("P1")
       expect(product.price).to eq(100)
     end
+
+    it "also saves the price in cents" do
+      product = Product.new("Product 1", "P1", 100)
+      expect(product.price_in_cents).to eq(10000)
+    end
   end
 
   context "without a name or code" do
