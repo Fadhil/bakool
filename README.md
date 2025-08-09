@@ -88,6 +88,114 @@ The gem comes with a default catalogue containing:
 | G01  | Green Widget | $24.95 |
 | B01  | Blue Widget | $7.95 |
 
+### Custom Catalogues
+
+You can create your own custom catalogue with your own products. This is useful when you want to use different products or pricing than the default catalogue.
+
+#### Creating a Custom Catalogue
+
+```ruby
+# Create a new empty catalogue
+catalogue = Bakool::Catalogue.new
+
+# Add products to your catalogue
+catalogue.add_product(Bakool::Product.new("Laptop", "LAP01", 999.99))
+catalogue.add_product(Bakool::Product.new("Mouse", "MOU01", 25.50))
+catalogue.add_product(Bakool::Product.new("Keyboard", "KEY01", 75.00))
+catalogue.add_product(Bakool::Product.new("Monitor", "MON01", 299.99))
+
+# Create a basket with your custom catalogue
+basket = Bakool::Basket.new(catalogue: catalogue)
+
+# Add products using your custom codes
+basket.add("LAP01")  # Laptop
+basket.add("MOU01")  # Mouse
+basket.add("KEY01")  # Keyboard
+
+# Calculate total
+total = basket.total
+puts "Total: $#{total}"
+```
+
+#### Complete Custom Catalogue Example
+
+```ruby
+# Create a custom catalogue for an electronics store
+electronics_catalogue = Bakool::Catalogue.new
+
+# Add electronics products
+electronics_catalogue.add_product(Bakool::Product.new("iPhone 15", "IPH15", 799.99))
+electronics_catalogue.add_product(Bakool::Product.new("AirPods Pro", "AIRPODS", 249.99))
+electronics_catalogue.add_product(Bakool::Product.new("MacBook Air", "MBA", 1199.99))
+electronics_catalogue.add_product(Bakool::Product.new("iPad Air", "IPAD", 599.99))
+
+# Create custom delivery charge rule for electronics
+electronics_delivery = Bakool::DeliveryChargeRule.new(lambda do |order_total|
+  if order_total < 10000 then 995      # $9.95 for orders under $100
+  elsif order_total < 50000 then 495   # $4.95 for orders under $500
+  else 0                              # Free delivery for orders $500+
+  end
+end)
+
+# Create custom discount for AirPods (buy one get one 25% off)
+class AirPodsDiscount < Bakool::Discount
+  def calculate(basket)
+    airpods = basket.items.filter { |item| item.code == "AIRPODS" }
+    if airpods.count >= 2
+      # Apply 25% discount to every second AirPod
+      (airpods.count / 2) * (airpods.first.price_in_cents * 0.25)
+    else
+      0
+    end
+  end
+end
+
+# Create basket with custom catalogue, delivery, and discount
+basket = Bakool::Basket.new(
+  catalogue: electronics_catalogue,
+  delivery_charge_rule: electronics_delivery,
+  discount: AirPodsDiscount.new
+)
+
+# Add items
+basket.add("IPH15")   # iPhone 15
+basket.add("AIRPODS") # AirPods Pro
+basket.add("AIRPODS") # Second AirPods Pro (25% off)
+basket.add("MBA")     # MacBook Air
+
+# Calculate total
+total = basket.total
+puts "Total: $#{total}"
+```
+
+#### Catalogue API Reference
+
+##### `Bakool::Catalogue.new`
+
+Creates a new empty catalogue.
+
+```ruby
+catalogue = Bakool::Catalogue.new
+```
+
+##### `catalogue.add_product(product)`
+
+Adds a product to the catalogue.
+
+- `product` (Bakool::Product): Product object to add
+
+```ruby
+catalogue.add_product(Bakool::Product.new("Product Name", "CODE", 29.99))
+```
+
+##### `Bakool::Catalogue.default_catalogue`
+
+Returns a catalogue with the default products (Red Widget, Green Widget, Blue Widget).
+
+```ruby
+default_catalogue = Bakool::Catalogue.default_catalogue
+```
+
 ### Custom Delivery Charges
 
 ```ruby
@@ -225,15 +333,27 @@ Manages the product inventory.
 
 Creates a new empty catalogue.
 
+```ruby
+catalogue = Bakool::Catalogue.new
+```
+
 #### `catalogue.add_product(product)`
 
 Adds a product to the catalogue.
 
 - `product` (Bakool::Product): Product object to add
 
+```ruby
+catalogue.add_product(Bakool::Product.new("Product Name", "CODE", 29.99))
+```
+
 #### `Bakool::Catalogue.default_catalogue`
 
 Returns a catalogue with default products (Red Widget, Green Widget, Blue Widget).
+
+```ruby
+default_catalogue = Bakool::Catalogue.default_catalogue
+```
 
 ### DeliveryChargeRule
 
