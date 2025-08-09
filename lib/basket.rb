@@ -3,11 +3,10 @@ class Basket
 
   require_relative "catalogue"
   require_relative "delivery_charge_rule"
-  require_relative "discount_rule"
   require_relative "discount_strategies/default_discount"
   require_relative "../errors/invalid_product_code_error"
 
-  def initialize(catalogue: Catalogue::default_catalogue, delivery_charge_rule: DeliveryChargeRule::default_delivery_charge_rule, discount_rule: DiscountRule::default_discount_rule, discount: DefaultDiscount::default_discount)
+  def initialize(catalogue: Catalogue::default_catalogue, delivery_charge_rule: DeliveryChargeRule::default_delivery_charge_rule, discount: DefaultDiscount::default_discount)
     @catalogue = catalogue
     @items = []
     @delivery_charge_rule = delivery_charge_rule
