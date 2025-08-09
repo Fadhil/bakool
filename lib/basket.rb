@@ -15,4 +15,12 @@ class Basket
     end
     @items << product
   end
+
+  def total
+    total = 0
+    items.each do |item|
+      total += item.price
+    end
+    total
+  end
 end
