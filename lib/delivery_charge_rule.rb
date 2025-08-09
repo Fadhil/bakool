@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
+# A rule that calculates delivery charges based on order total
 class DeliveryChargeRule
   attr_accessor :func
 
   # @param func [Proc] A function that takes an order total in cents and returns the delivery charge in cents
   def initialize(func = nil)
-    @func = func || lambda { |order_total| if order_total > 0 then 495 else 0 end }
+    @func = func || ->(order_total) { order_total.positive? ? 495 : 0 }
   end
 
   # Returns the delivery charge in cents

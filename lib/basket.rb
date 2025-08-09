@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# A shopping basket that can hold products and calculate totals with discounts and delivery charges
 class Basket
   attr_accessor :catalogue, :items, :delivery_charge_rule, :discount_rule, :discount
 
@@ -6,7 +9,9 @@ class Basket
   require_relative "discount_strategies/default_discount"
   require_relative "../errors/invalid_product_code_error"
 
-  def initialize(catalogue: Catalogue::default_catalogue, delivery_charge_rule: DeliveryChargeRule::default_delivery_charge_rule, discount: DefaultDiscount::default_discount)
+  def initialize(catalogue: Catalogue.default_catalogue,
+                 delivery_charge_rule: DeliveryChargeRule.default_delivery_charge_rule,
+                 discount: DefaultDiscount.default_discount)
     @catalogue = catalogue
     @items = []
     @delivery_charge_rule = delivery_charge_rule
@@ -15,10 +20,9 @@ class Basket
   end
 
   def add(product_code)
-    product = catalogue.products.find { |product| product.code == product_code }
-    if product.nil?
-      raise InvalidProductCodeError, "Invalid product code: #{product_code}"
-    end
+    product = catalogue.products.find { |p| p.code == product_code }
+    raise InvalidProductCodeError, "Invalid product code: #{product_code}" if product.nil?
+
     @items << product
   end
 

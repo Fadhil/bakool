@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require "delivery_charge_rule"
 
+# rubocop:disable Metrics/BlockLength
 describe DeliveryChargeRule do
   context "without a charge function and order total is 0" do
     it "should return 0" do
@@ -19,8 +22,14 @@ describe DeliveryChargeRule do
 
   context "with a charge function" do
     it "should return the result of the charge function" do
-      rules = Proc.new do |order_total|
-        if order_total >= 2000 then 0 elsif order_total >= 100 then 299 else 499 end
+      rules = proc do |order_total|
+        if order_total >= 2000
+          0
+        elsif order_total >= 100
+          299
+        else
+          499
+        end
       end
 
       delivery_charge_rule = DeliveryChargeRule.new(rules)
@@ -31,3 +40,4 @@ describe DeliveryChargeRule do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

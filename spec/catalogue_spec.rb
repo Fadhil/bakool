@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require "catalogue"
 
+# rubocop:disable Metrics/BlockLength
 describe Catalogue do
   describe "without any products" do
     it "initializes with an empty array" do
@@ -18,7 +21,7 @@ describe Catalogue do
 
   describe "::default_catalogue" do
     it "returns an array of default products" do
-      catalogue = Catalogue::default_catalogue
+      catalogue = Catalogue.default_catalogue
       expect(catalogue.products.count).to eq(3)
       expect(catalogue.products[0].name).to eq("Red Widget")
       expect(catalogue.products[0].code).to eq("R01")
@@ -32,3 +35,4 @@ describe Catalogue do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require "product"
 
+# rubocop:disable Metrics/BlockLength
 describe Product do
   context "with name, code and price" do
     it "initialises a product with the given name, code and price" do
@@ -11,7 +14,7 @@ describe Product do
 
     it "also saves the price in cents" do
       product = Product.new("Product 1", "P1", 100)
-      expect(product.price_in_cents).to eq(10000)
+      expect(product.price_in_cents).to eq(10_000)
     end
   end
 
@@ -35,3 +38,4 @@ describe Product do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

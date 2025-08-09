@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# A catalogue that holds a collection of products
 class Catalogue
   attr_accessor :products
 

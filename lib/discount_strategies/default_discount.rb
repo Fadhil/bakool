@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require_relative "discount"
 
+# Default discount strategy that applies no discount
 class DefaultDiscount < Discount
-  def calculate(basket)
+  def calculate(_basket)
     0
   end
 

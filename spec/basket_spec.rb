@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require "basket"
 
+# rubocop:disable Metrics/BlockLength
 describe Basket do
   context "without a given catalogue" do
     it "creates a basket with a catalogue of default products" do
@@ -73,7 +76,17 @@ describe Basket do
 
     context "with one R01 and one G01 item in the basket and given delivery charge rules" do
       it "applies delivery charge accordingly" do
-        delivery_charge_rule = DeliveryChargeRule.new(lambda { |order_total| if order_total < 5000 then 495 elsif order_total < 9000 then 295 else 0 end })
+        delivery_charge_rule = DeliveryChargeRule.new(
+          lambda do |order_total|
+            if order_total < 5000
+              495
+            elsif order_total < 9000
+              295
+            else
+              0
+            end
+          end
+        )
         basket = Basket.new(delivery_charge_rule: delivery_charge_rule)
         basket.add("R01")
         basket.add("G01")
@@ -81,10 +94,21 @@ describe Basket do
       end
     end
 
-    context "with two R01 items in the basket and given discount rule for buy second R01 items at half price and given delivery charge rules" do
+    context "with two R01 items in the basket and given discount rule for buy second R01 " \
+            "items at half price and given delivery charge rules" do
       it "applies discount accordingly" do
         discount = FiftyPercentOff2ndSameItemDiscount.new("R01")
-        delivery_charge_rule = DeliveryChargeRule.new(lambda { |order_total| if order_total < 5000 then 495 elsif order_total < 9000 then 295 else 0 end })
+        delivery_charge_rule = DeliveryChargeRule.new(
+          lambda do |order_total|
+            if order_total < 5000
+              495
+            elsif order_total < 9000
+              295
+            else
+              0
+            end
+          end
+        )
         basket = Basket.new(discount: discount, delivery_charge_rule: delivery_charge_rule)
         basket.add("R01")
         basket.add("R01")
@@ -93,10 +117,21 @@ describe Basket do
     end
   end
 
-  context "with one B01 and one G01 in the basket and given discount rule for buy second R01 items at half price and given delivery charge rules" do
+  context "with one B01 and one G01 in the basket and given discount rule for buy second " \
+          "R01 items at half price and given delivery charge rules" do
     it "calculates the total correctly" do
       discount = FiftyPercentOff2ndSameItemDiscount.new("R01")
-      delivery_charge_rule = DeliveryChargeRule.new(lambda { |order_total| if order_total < 5000 then 495 elsif order_total < 9000 then 295 else 0 end })
+      delivery_charge_rule = DeliveryChargeRule.new(
+        lambda do |order_total|
+          if order_total < 5000
+            495
+          elsif order_total < 9000
+            295
+          else
+            0
+          end
+        end
+      )
       basket = Basket.new(discount: discount, delivery_charge_rule: delivery_charge_rule)
       basket.add("B01")
       basket.add("G01")
@@ -104,10 +139,21 @@ describe Basket do
     end
   end
 
-  context "with B01, B01, R01, R01, R01 in the basket and given discount rule for buy second R01 items at half price and given delivery charge rules" do
+  context "with B01, B01, R01, R01, R01 in the basket and given discount rule for buy " \
+          "second R01 items at half price and given delivery charge rules" do
     it "calculates the total correctly" do
       discount = FiftyPercentOff2ndSameItemDiscount.new("R01")
-      delivery_charge_rule = DeliveryChargeRule.new(lambda { |order_total| if order_total < 5000 then 495 elsif order_total < 9000 then 295 else 0 end })
+      delivery_charge_rule = DeliveryChargeRule.new(
+        lambda do |order_total|
+          if order_total < 5000
+            495
+          elsif order_total < 9000
+            295
+          else
+            0
+          end
+        end
+      )
       basket = Basket.new(discount: discount, delivery_charge_rule: delivery_charge_rule)
       basket.add("B01")
       basket.add("B01")
@@ -118,3 +164,4 @@ describe Basket do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
