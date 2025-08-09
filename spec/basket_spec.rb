@@ -63,12 +63,21 @@ describe Basket do
       end
     end
 
-    context "with items in the basket" do
-      it "returns the total price of the basket" do
+    context "with one R01 item in the basket and no delivery charge rules" do
+      it "applies 4.95 delivery charge" do
         basket = Basket.new
         basket.add("R01")
+        expect(basket.total).to eq(37.9)
+      end
+    end
+
+    context "with one R01 and one G01 item in the basket and given delivery charge rules" do
+      it "applies delivery charge accordingly" do
+        delivery_charge_rule = DeliveryChargeRule.new(lambda { |order_total| if order_total < 5000 then 495 elsif order_total < 9000 then 295 else 0 end })
+        basket = Basket.new(delivery_charge_rule: delivery_charge_rule)
+        basket.add("R01")
         basket.add("G01")
-        expect(basket.total).to eq(57.9)
+        expect(basket.total).to eq(60.85)
       end
     end
   end
