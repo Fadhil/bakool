@@ -2,6 +2,15 @@
 
 # A catalogue that holds a collection of products
 module Bakool
+  # Represents a catalogue that holds a collection of products.
+  # Provides methods to add products and retrieve the default catalogue.
+  #
+  # @example
+  #   catalogue = Bakool::Catalogue.new
+  #   catalogue.add_product(Bakool::Product.new("Widget", "W01", 10.00))
+  #   default_catalogue = Bakool::Catalogue.default_catalogue
+  #
+  # @attr_reader products [Array<Bakool::Product>] The products in the catalogue
   class Catalogue
     attr_accessor :products
 

@@ -2,6 +2,19 @@
 
 # A shopping basket that can hold products and calculate totals with discounts and delivery charges
 module Bakool
+  # Represents a shopping basket that can hold products and calculate totals
+  # with discounts and delivery charges applied.
+  #
+  # @example
+  #   basket = Bakool::Basket.new
+  #   basket.add("R01")
+  #   basket.add("G01")
+  #   total = basket.total
+  #
+  # @attr_reader catalogue [Bakool::Catalogue] The product catalogue
+  # @attr_reader items [Array<Bakool::Product>] The items in the basket
+  # @attr_reader delivery_charge_rule [Bakool::DeliveryChargeRule] The delivery charge calculation rule
+  # @attr_reader discount [Bakool::Discount] The discount strategy to apply
   class Basket
     attr_accessor :catalogue, :items, :delivery_charge_rule, :discount_rule, :discount
 

@@ -2,6 +2,16 @@
 
 # A product that can be added to a shopping basket
 module Bakool
+  # Represents a product that can be added to a shopping basket.
+  # Each product has a name, code, and price.
+  #
+  # @example
+  #   product = Bakool::Product.new("Red Widget", "R01", 32.95)
+  #   price_in_cents = product.price_in_cents # 3295
+  #
+  # @attr_reader name [String] The product name
+  # @attr_reader code [String] The product code
+  # @attr_reader price [Numeric] The product price in dollars
   class Product
     attr_accessor :name, :code, :price
 

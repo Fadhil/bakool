@@ -2,6 +2,17 @@
 
 # A rule that calculates delivery charges based on order total
 module Bakool
+  # Represents a rule that calculates delivery charges based on order total.
+  # Can be customized with a custom calculation function or use the default logic.
+  #
+  # @example
+  #   rule = Bakool::DeliveryChargeRule.new
+  #   charge = rule.calculate(5000) # 495 cents for orders over 0
+  #
+  # @example Custom rule
+  #   custom_rule = Bakool::DeliveryChargeRule.new(->(total) { total > 5000 ? 0 : 1000 })
+  #
+  # @attr_reader func [Proc] The function that calculates delivery charges
   class DeliveryChargeRule
     attr_accessor :func
 

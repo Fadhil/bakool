@@ -2,6 +2,14 @@
 
 # Discount strategy that applies 50% off the second item of the same type
 module Bakool
+  # Discount strategy that applies 50% off the second item of the same type.
+  # This discount is applied when there are 2 or more items with the same product code.
+  #
+  # @example
+  #   discount = Bakool::FiftyPercentOff2ndSameItemDiscount.new("R01")
+  #   amount = discount.calculate(basket) # Returns discount amount in cents
+  #
+  # @see Bakool::Discount
   class FiftyPercentOff2ndSameItemDiscount < Discount
     def initialize(item_code)
       super()
