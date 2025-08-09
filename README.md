@@ -16,6 +16,8 @@ A flexible Ruby library for managing shopping baskets with support for products,
 
 - We're dealing with an unspecified currency that uses 2 decimal places for cents
 - We currently will only support having one discount rule and one delivery charge rule per basket
+- Delivery calculations are only done based on the total price after discount and is not dependent on what items are in the basket
+- Discount calculations depends on the items/item combinations in the basket
 
 
 ## Installation
