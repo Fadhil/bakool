@@ -13,7 +13,7 @@ class Product
     @name = name
     @code = code
     @price = price
-    @price_in_cents = price_in_cents
+    @price_in_cents = (price * 100).to_i
   end
 
   def price_in_cents

@@ -1,6 +1,8 @@
 class Catalogue
   attr_accessor :products
 
+  require_relative "product"
+
   def initialize
     @products = []
   end
