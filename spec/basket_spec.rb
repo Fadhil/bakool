@@ -62,5 +62,14 @@ describe Basket do
         expect(basket.total).to eq(0)
       end
     end
+
+    context "with items in the basket" do
+      it "returns the total price of the basket" do
+        basket = Basket.new
+        basket.add("R01")
+        basket.add("G01")
+        expect(basket.total).to eq(57.9)
+      end
+    end
   end
 end

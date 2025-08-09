@@ -17,10 +17,10 @@ class Basket
   end
 
   def total
-    total = 0
+    total_in_cents = 0
     items.each do |item|
-      total += item.price
+      total_in_cents += item.price_in_cents
     end
-    total
+    total_in_cents / 100.0
   end
 end
