@@ -15,7 +15,7 @@ describe Bakool::Discount do
   end
 
   context "when there are at least 2 items with the same given code" do
-    it "should return 0" do
+    it "should return discount amounting to 50% of the item" do
       basket = Bakool::Basket.new
       basket.add("R01")
       basket.add("R01")
