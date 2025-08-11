@@ -1,4 +1,5 @@
 # Bakool: Shopping Basket Library
+[![Gem Version](https://badge.fury.io/rb/github-badge.svg)](https://badge.fury.io/rb/github-badge)
 
 A flexible Ruby gem for managing shopping baskets with support for products, delivery charges, and discount strategies.
 
